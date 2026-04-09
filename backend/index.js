@@ -4,6 +4,7 @@ require("dotenv").config();
 require("./src/db/connection");
 
 const productosRoutes = require("./src/routes/productos.routes");
+const movimientosRoutes = require("./src/routes/movimientos.routes");
 
 const app = express();
 const PORT = process.env.PORT || 3000;
@@ -12,6 +13,7 @@ app.use(cors());
 app.use(express.json());
 
 app.use("/api/productos", productosRoutes);
+app.use("/api/movimientos", movimientosRoutes);
 
 app.get("/", (req, res) => {
   res.json({ mensaje: "API Inventario Salsamentaria funcionando ✅" });
