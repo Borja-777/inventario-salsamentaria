@@ -1,5 +1,7 @@
+const { get } = require("node:http");
 const pool = require("../db/connection");
 
+//Funcion para obtener todos los productos
 const getProductos = async (req, res) => {
   try {
     const result = await pool.query("SELECT * FROM productos ORDER BY id ASC");
@@ -9,6 +11,7 @@ const getProductos = async (req, res) => {
   }
 };
 
+//Funcion para crear un nuevo producto
 const createProducto = async (req, res) => {
   try {
     const {
@@ -29,4 +32,16 @@ const createProducto = async (req, res) => {
   }
 };
 
-module.exports = { getProductos, createProducto };
+//Funcion de alerta para productos con stock bajo
+const getAlertas = async (req, res) => {
+  try {
+    const result = await pool.query(
+      "SELECT * FROM productos WHERE stock_actual <= stock_minimo ORDER BY stock_actual ASC",
+    );
+    res.json(result.rows);
+  } catch (error) {
+    res.status(500).json({ error: "Error al obtener alertas" });
+  }
+};
+
+module.exports = { getProductos, createProducto, getAlertas };
